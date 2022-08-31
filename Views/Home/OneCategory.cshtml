@@ -1,0 +1,36 @@
+@{
+    ViewData["Title"] = "Category Page";
+}
+@model Category
+<h1 class="display-4 text-center">@Model.Name</h1>
+<div class="row">
+    <div class="col text-center">
+        <h2 class="display-6">Products</h2>
+        @{
+            foreach (Association p in Model.ProductsWithin)
+            {
+                <p>@p.Product.Name</p>
+            }
+        }
+    </div>
+    <div class="col">
+        <form action="/addProductTo" method="post">
+            <div class="form-group">
+                <h3 class="display-8">Add Product</h3>
+                <select class="form-control" name="ProductId">
+                    @{
+                        foreach (Product a in ViewBag.AllProducts)
+                        {
+                            if (!Model.ProductsWithin.Any(b => b.ProductId == a.ProductId))
+                            {
+                                <option value="@a.ProductId">@a.Name</option>
+                            }
+                        }
+                    }
+                </select>
+            </div>
+            <input type="hidden" asp-for="CategoryId" value="@Model.CategoryId">
+            <input class="btn btn-primary" type="Submit" value="Add">
+        </form>
+    </div>
+</div>
